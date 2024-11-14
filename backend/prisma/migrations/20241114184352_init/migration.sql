@@ -4,7 +4,7 @@ CREATE TABLE "Contact" (
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "phone" INTEGER NOT NULL,
+    "phone" TEXT NOT NULL,
     "company" TEXT NOT NULL,
     "jobTitle" TEXT NOT NULL,
 

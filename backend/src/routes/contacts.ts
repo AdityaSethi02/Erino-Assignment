@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { contactSchema } from "@adityasethi1701/ernio-task-common";
+import { contactSchema } from '../validations/contactSchema';
 
 const router = Router();
 const prisma = new PrismaClient();
