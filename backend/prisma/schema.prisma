@@ -18,7 +18,7 @@ model Contact {
   firstName String
   lastName  String
   email     String @unique
-  phone     Int
+  phone     String
   company   String
   jobTitle  String
 }
