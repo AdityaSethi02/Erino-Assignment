@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { Button, Grid2, Paper, Typography } from "@mui/material";
+import { Box, Button, Grid2, Paper, Typography } from "@mui/material";
 import { BACKEND_URL } from "../config";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -38,9 +38,17 @@ export const Contact = () => {
     return (
         <Grid2 container direction="column" alignItems="center" justifyContent="center" sx={{ height: "100vh", width: "100vw", textAlign: "center", backgroundColor: "lightblue" }}>
             <Paper elevation={3} sx={{ padding: 4, maxWidth: 5000, maxHeight: 500, height: "90%", width: "90%" }}>
-                <Typography variant="h4" color="black" gutterBottom>
-                    Contact Details
-                </Typography>
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
+                    <Button onClick={() => navigate("/all")} sx={{ minWidth: 0, padding: 0 }}>
+                        <Typography variant="h4" color="black" gutterBottom>
+                            ←
+                        </Typography>
+                    </Button>
+                    <Typography variant="h4" color="black" gutterBottom sx={{ flexGrow: 1, textAlign: "center" }}>
+                        Contact Details
+                    </Typography>
+                    <Box sx={{ width: "24px" }} /> {/* Keeps the arrow alignment by providing a placeholder */}
+                </Box>
                 <Grid2 container spacing={2}>
                     <Grid2 size={6} sx={{pb: 2}}>
                         <Typography sx={{fontSize: 50}}>{contact?.firstName}  {contact?.lastName}</Typography>
