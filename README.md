@@ -65,7 +65,7 @@ The **Contact Management** feature helps users manage customer/client informatio
    ```bash
    npm run build
    ```
-5. Start the backend server:
+6. Start the backend server:
    ```bash
    npm run start
    ```
@@ -85,7 +85,21 @@ The **Contact Management** feature helps users manage customer/client informatio
    npm install
    ```
 
-3. Start the frontend server:
+3. Navigate to the src directory:
+    ```bash
+    cd src
+    ```
+
+4. Create a `config.ts` file in the `frontend/src` directory and add the following:
+   ```env
+   export const BACKEND_URL = `http://localhost:8080`.
+   ```
+
+5. Navigate back to the frontend directory Start the frontend server:
+   ```bash
+   cd ..
+   ```
+6. Start the frontend server:
    ```bash
    npm run dev
    ```
