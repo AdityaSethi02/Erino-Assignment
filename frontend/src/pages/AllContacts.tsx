@@ -16,7 +16,7 @@ import {
     Typography,
 } from "@mui/material";
 import { BACKEND_URL } from "../config";
-import { ArrowBack, ArrowForward, MoreVert } from "@mui/icons-material";
+import { ArrowBack, ArrowForward, MoreVert, Sort } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { AllContactSkeleton } from "../components/AllContactSkeleton";
 
@@ -36,6 +36,7 @@ export const AllContacts = () => {
     const [selectedContactId, setSelectedContactId] = useState<number | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setloading] = useState(true);
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
     const contactsPerPage = 5;
     const navigate = useNavigate();
 
@@ -69,6 +70,23 @@ export const AllContacts = () => {
         axios.delete(`${BACKEND_URL}/contacts/${contactId}`);
     };
 
+    const sortContacts = () => {
+        const sortedContacts = [...contacts].sort((a, b) => {
+            if (sortOrder == "asc") {
+                return a.firstName.localeCompare(b.firstName);
+            } else {
+                return b.firstName.localeCompare(a.firstName);
+            }
+        });
+        setContacts(sortedContacts);
+    }
+
+    const toggleSortOrder = () => setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+
+    useEffect(() => {
+        sortContacts();
+    }, [sortOrder]);
+
     const indexOfLastContact = currentPage * contactsPerPage;
     const indexOfFirstContact = indexOfLastContact - contactsPerPage;
     const currentContacts = contacts.slice(indexOfFirstContact, indexOfLastContact);
@@ -85,10 +103,6 @@ export const AllContacts = () => {
         }
     };
 
-    if (loading) {
-        <AllContactSkeleton />
-    }
-
     return (
         <Grid2 sx={{ height: "100vh", width: "100vw", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "lightblue"}}>
             <Paper elevation={3} sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 4, height: "90%", width: "90%", maxWidth: 5000, maxHeight: 520 }}>
@@ -96,7 +110,7 @@ export const AllContacts = () => {
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
                         <Button onClick={() => navigate("/create")} sx={{ minWidth: 0, padding: 0 }}>
                             <Typography variant="h4" color="black" gutterBottom>
-                                ←
+                                <ArrowBack />
                             </Typography>
                         </Button>
                         <Typography variant="h4" color="black" gutterBottom sx={{ flexGrow: 1, textAlign: "center" }}>
@@ -108,7 +122,12 @@ export const AllContacts = () => {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="center">First Name</TableCell>
+                                    <TableCell align="center">
+                                        First Name
+                                        <IconButton onClick={toggleSortOrder} sx={{ ml: 1 }}>
+                                            <Sort />
+                                        </IconButton>
+                                    </TableCell>
                                     <TableCell align="center">Last Name</TableCell>
                                     <TableCell align="center">Email</TableCell>
                                     <TableCell align="center">Phone</TableCell>
