@@ -28,7 +28,7 @@ export const Contact = () => {
             .catch((error) => {
                 console.log("Contact not found", error);
             })
-    }, []);
+    }, [id]);
 
     const deleteContact = (id: number) => {
         axios.delete(`${BACKEND_URL}/contacts/${id}`);
