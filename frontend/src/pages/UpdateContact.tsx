@@ -14,8 +14,9 @@ export const UpdateContact = () => {
         company: "",
         jobTitle: "",
     });
-    const navigate = useNavigate();
     const [updating, setUpdating] = useState(false);
+    const [phoneError, setPhoneError] = useState("");
+    const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
@@ -32,12 +33,29 @@ export const UpdateContact = () => {
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+
+        if (name === "phone") {
+            if (!/^\d*$/.test(value)) {
+                setPhoneError("Phone number must be a number");
+            } else if (value.length > 10 || value.length < 10) {
+                setPhoneError("Phone number must be 10 digits");
+            } else {
+                setPhoneError("");
+            }
+        }
         setContact((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+
+        if (contact.phone.length !== 10) {
+            setPhoneError("Phone number must be 10 digits");
+            return;
+        }
+
         setUpdating(true);
+
         try {
             await axios.put(`${BACKEND_URL}/contacts/${id}`, contact);
             navigate(`/contact/${id}`);
@@ -100,6 +118,8 @@ export const UpdateContact = () => {
                                 name="phone"
                                 value={contact.phone}
                                 onChange={handleChange}
+                                error={!!phoneError}
+                                helperText={phoneError}
                                 required
                             />
                         </Grid2>

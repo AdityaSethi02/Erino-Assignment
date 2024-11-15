@@ -15,6 +15,16 @@ router.post('/', async (req, res) => {
     const { firstName, lastName, email, phone, company, jobTitle } = req.body;
 
     try {
+        const existingContact = await prisma.contact.findUnique({
+            where: {
+                email
+            }
+        });
+
+        if (existingContact) {
+            res.status(400).json({ error: "Email already exists" });
+        }
+
         const contact = await prisma.contact.create({
             data: {
                 firstName,

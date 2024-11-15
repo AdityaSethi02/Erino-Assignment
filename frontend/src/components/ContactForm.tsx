@@ -14,16 +14,34 @@ export const ContactForm = () => {
         company: "",
         jobTitle: "",
     });
-    const navigate = useNavigate();
     const [creating, setCreating] = useState(false);
+    const [phoneError, setPhoneError] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const navigate = useNavigate();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+
+        if (name === "phone") {
+            if (!/^\d*$/.test(value)) {
+                setPhoneError("Phone number must be a number");
+            } else if (value.length > 10 || value.length < 10) {
+                setPhoneError("Phone number must be 10 digits");
+            } else {
+                setPhoneError("");
+            }
+        }
         setContact((prev) => ({...prev, [name]: value}));
     }
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+
+        if (contact.phone.length !== 10) {
+            setPhoneError("Phone number must be 10 digits");
+            return;
+        }
+
         setCreating(true);
         try {
             await axios.post(`${BACKEND_URL}/contacts`, contact);
@@ -37,7 +55,11 @@ export const ContactForm = () => {
             });
             navigate("/all");
         } catch (error) {
-            console.log("Error adding contact", error);
+            if (axios.isAxiosError(error) && error.response?.data?.error === "Email already exists") {
+                setEmailError("Email already exists");
+            } else {
+                console.error(error);
+            }
         } finally {
             setCreating(false);
         }
@@ -81,6 +103,7 @@ export const ContactForm = () => {
                                 value={contact.lastName}
                                 onChange={handleChange}
                                 required
+                                autoComplete="off"
                             />
                         </Grid2>
                         <Grid2 size={6}>
@@ -90,7 +113,10 @@ export const ContactForm = () => {
                                 name="email"
                                 value={contact.email}
                                 onChange={handleChange}
+                                error={!!emailError}
+                                helperText={emailError}
                                 required
+                                autoComplete="off"
                             />
                         </Grid2>
                         <Grid2 size={6}>
@@ -100,7 +126,10 @@ export const ContactForm = () => {
                                 name="phone"
                                 value={contact.phone}
                                 onChange={handleChange}
+                                error={!!phoneError}
+                                helperText={phoneError}
                                 required
+                                autoComplete="off"
                             />
                         </Grid2>
                         <Grid2 size={6}>
@@ -111,6 +140,7 @@ export const ContactForm = () => {
                                 value={contact.company}
                                 onChange={handleChange}
                                 required
+                                autoComplete="off"
                             />
                         </Grid2>
                         <Grid2 size={6}>
@@ -121,6 +151,7 @@ export const ContactForm = () => {
                                 value={contact.jobTitle}
                                 onChange={handleChange}
                                 required
+                                autoComplete="off"
                             />
                         </Grid2>
                         <Grid2 size={12} sx={{ textAlign: "center"}}>
