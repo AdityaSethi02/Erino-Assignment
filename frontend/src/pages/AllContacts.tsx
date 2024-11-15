@@ -18,6 +18,7 @@ import {
 import { BACKEND_URL } from "../config";
 import { ArrowBack, ArrowForward, MoreVert } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { AllContactSkeleton } from "../components/AllContactSkeleton";
 
 interface Contacts {
     id: number;
@@ -34,6 +35,7 @@ export const AllContacts = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedContactId, setSelectedContactId] = useState<number | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setloading] = useState(true);
     const contactsPerPage = 5;
     const navigate = useNavigate();
 
@@ -42,9 +44,11 @@ export const AllContacts = () => {
             .get(`${BACKEND_URL}/contacts`)
             .then((response) => {
                 setContacts(response.data);
+                setloading(false);
             })
             .catch((error) => {
                 console.log("Error getting contacts", error);
+                setloading(false);
             });
     }, []);
 
@@ -80,6 +84,10 @@ export const AllContacts = () => {
             setCurrentPage((prev) => prev - 1);
         }
     };
+
+    if (loading) {
+        <AllContactSkeleton />
+    }
 
     return (
         <Grid2
@@ -122,6 +130,9 @@ export const AllContacts = () => {
                                     <TableCell align="center"></TableCell>
                                 </TableRow>
                             </TableHead>
+                            {loading ? (
+                                <AllContactSkeleton />
+                            ) : (
                             <TableBody>
                                 {currentContacts.map((contact) => (
                                     <TableRow key={contact.id}>
@@ -164,10 +175,10 @@ export const AllContacts = () => {
                                     </TableRow>
                                 ))}
                             </TableBody>
+                            )}
                         </Table>
                     </TableContainer>
                 </Grid2>
-                {/* Fixed navigation */}
                 <Box
                     sx={{
                         display: "flex",

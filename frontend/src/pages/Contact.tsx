@@ -3,6 +3,7 @@ import axios from "axios"
 import { Box, Button, Grid2, Paper, Typography } from "@mui/material";
 import { BACKEND_URL } from "../config";
 import { useNavigate, useParams } from "react-router-dom";
+import { ContactSkeleton } from "../components/ContactSkeleton";
 
 interface Contact {
     id: number;
@@ -16,6 +17,7 @@ interface Contact {
 
 export const Contact = () => {
     const [contact, setContact] = useState<Contact>();
+    const [loading, setloading] = useState(true);
     const navigate = useNavigate();
     const { id } = useParams()
 
@@ -23,16 +25,17 @@ export const Contact = () => {
         axios.get(`${BACKEND_URL}/contacts/${id}`)
             .then((response) => {
                 setContact(response.data);
-                console.log(response.data);
+                setloading(false)
             })
             .catch((error) => {
                 console.log("Contact not found", error);
+                setloading(false);
             })
     }, [id]);
 
     const deleteContact = (id: number) => {
         axios.delete(`${BACKEND_URL}/contacts/${id}`);
-        navigate("/all");
+        navigate("/");
     }
 
     return (
@@ -47,16 +50,16 @@ export const Contact = () => {
                     <Typography variant="h4" color="black" gutterBottom sx={{ flexGrow: 1, textAlign: "center" }}>
                         Contact Details
                     </Typography>
-                    <Box sx={{ width: "24px" }} /> {/* Keeps the arrow alignment by providing a placeholder */}
+                    <Box sx={{ width: "24px" }} />
                 </Box>
+                {loading ? (
+                    <ContactSkeleton />
+                ) : (
                 <Grid2 container spacing={2}>
-                    <Grid2 size={6} sx={{pb: 2}}>
+                    <Grid2 size={12} sx={{pb: 2}}>
                         <Typography sx={{fontSize: 50}}>{contact?.firstName}  {contact?.lastName}</Typography>
                     </Grid2>
-                    <Grid2 size={6}>
-                        <Typography></Typography>
-                    </Grid2>
-                    <Grid2 container spacing ={2} size={6}>
+                    <Grid2 container spacing ={2} size={12}>
                         <Grid2 size={6}>
                             <Typography sx={{fontSize: 30}}>Phone:</Typography>
                         </Grid2>
@@ -64,10 +67,7 @@ export const Contact = () => {
                             <Typography sx={{fontSize: 30}}>{contact?.phone}</Typography>
                         </Grid2>
                     </Grid2>
-                    <Grid2 size={6}>
-                        <Typography></Typography>
-                    </Grid2>
-                    <Grid2 container spacing ={2} size={6}>
+                    <Grid2 container spacing ={2} size={12}>
                         <Grid2 size={6}>
                             <Typography sx={{fontSize: 30}}>Email:</Typography>
                         </Grid2>
@@ -75,10 +75,7 @@ export const Contact = () => {
                             <Typography sx={{fontSize: 30}}>{contact?.email}</Typography>
                         </Grid2>
                     </Grid2>
-                    <Grid2 size={6}>
-                        <Typography></Typography>
-                    </Grid2>
-                    <Grid2 container spacing ={2} size={6}>
+                    <Grid2 container spacing ={2} size={12}>
                         <Grid2 size={6}>
                             <Typography sx={{fontSize: 30}}>Company:</Typography>
                         </Grid2>
@@ -86,10 +83,7 @@ export const Contact = () => {
                             <Typography sx={{fontSize: 30}}>{contact?.company}</Typography>
                         </Grid2>
                     </Grid2>
-                    <Grid2 size={6}>
-                        <Typography></Typography>
-                    </Grid2>
-                    <Grid2 container spacing ={2} size={6}>
+                    <Grid2 container spacing ={2} size={12}>
                         <Grid2 size={6}>
                             <Typography sx={{fontSize: 30}}>Job Title:</Typography>
                         </Grid2>
@@ -98,6 +92,7 @@ export const Contact = () => {
                         </Grid2>
                     </Grid2>
                 </Grid2>
+                )}
                 <Grid2 container spacing={3} sx={{pt: 7}}>
                     <Grid2 size={6} sx={{ textAlign: "right"}}>
                         <Button onClick={() => navigate(`/update/${id}`)} variant="contained" color="primary" size="large">
