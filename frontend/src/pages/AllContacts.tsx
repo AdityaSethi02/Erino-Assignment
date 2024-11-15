@@ -36,7 +36,7 @@ export const AllContacts = () => {
     const [selectedContactId, setSelectedContactId] = useState<number | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setloading] = useState(true);
-    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
     const contactsPerPage = 5;
     const navigate = useNavigate();
 

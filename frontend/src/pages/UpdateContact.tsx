@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import axios from "axios"
-import { Box, Button, Grid2, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Grid2, Paper, TextField, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowBack } from "@mui/icons-material";
 import { BACKEND_URL } from "../config";
@@ -15,6 +15,7 @@ export const UpdateContact = () => {
         jobTitle: "",
     });
     const navigate = useNavigate();
+    const [updating, setUpdating] = useState(false);
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
@@ -36,12 +37,14 @@ export const UpdateContact = () => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-
+        setUpdating(true);
         try {
             await axios.put(`${BACKEND_URL}/contacts/${id}`, contact);
             navigate(`/contact/${id}`);
         } catch (error) {
             console.log("Error updating contact", error);
+        } finally {
+            setUpdating(false);
         }
     };
 
@@ -121,8 +124,8 @@ export const UpdateContact = () => {
                             />
                         </Grid2>
                         <Grid2 size={12} sx={{ textAlign: "center"}}>
-                            <Button type="submit" variant="contained" color="primary">
-                                Update
+                            <Button type="submit" variant="contained" color="primary" disabled={updating} startIcon={updating ? <CircularProgress size={20} /> : null}>
+                                {updating ? "Updating" : "Update"}
                             </Button>
                         </Grid2>
                     </Grid2>

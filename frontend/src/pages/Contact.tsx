@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { Box, Button, Grid2, Paper, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Grid2, Paper, Typography } from "@mui/material";
 import { BACKEND_URL } from "../config";
 import { useNavigate, useParams } from "react-router-dom";
 import { ContactSkeleton } from "../components/ContactSkeleton";
@@ -18,6 +18,7 @@ interface Contact {
 export const Contact = () => {
     const [contact, setContact] = useState<Contact>();
     const [loading, setloading] = useState(true);
+    const [deleting, setDeleting] = useState(false);
     const navigate = useNavigate();
     const { id } = useParams()
 
@@ -34,8 +35,15 @@ export const Contact = () => {
     }, [id]);
 
     const deleteContact = (id: number) => {
-        axios.delete(`${BACKEND_URL}/contacts/${id}`);
-        navigate("/");
+        setDeleting(true);
+        try {
+            axios.delete(`${BACKEND_URL}/contacts/${id}`);
+            navigate("/");
+        } catch (error) {
+            console.log("Error deleting contact", error)
+        } finally {
+            setDeleting(false);
+        }
     }
 
     return (
@@ -100,8 +108,8 @@ export const Contact = () => {
                         </Button>
                     </Grid2>
                     <Grid2 size={6} sx={{ textAlign: "left"}}>
-                        <Button onClick={() => contact && deleteContact(contact.id)} variant="contained" color="error" size="large">
-                            Delete
+                        <Button onClick={() => contact && deleteContact(contact.id)} variant="contained" color="error" size="large" disabled={deleting} startIcon={deleting ? <CircularProgress size={20} /> : null}>
+                            {deleting ? "Deleting" : "Delete"}
                         </Button>
                     </Grid2>
                 </Grid2>

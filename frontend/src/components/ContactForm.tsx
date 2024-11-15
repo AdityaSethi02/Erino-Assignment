@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react"
 import axios from "axios"
-import { Box, Button, Grid2, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Grid2, Paper, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { BACKEND_URL } from "../config";
@@ -15,6 +15,7 @@ export const ContactForm = () => {
         jobTitle: "",
     });
     const navigate = useNavigate();
+    const [creating, setCreating] = useState(false);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -23,7 +24,7 @@ export const ContactForm = () => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-
+        setCreating(true);
         try {
             await axios.post(`${BACKEND_URL}/contacts`, contact);
             setContact({
@@ -37,6 +38,8 @@ export const ContactForm = () => {
             navigate("/all");
         } catch (error) {
             console.log("Error adding contact", error);
+        } finally {
+            setCreating(false);
         }
     }
 
@@ -121,8 +124,8 @@ export const ContactForm = () => {
                             />
                         </Grid2>
                         <Grid2 size={12} sx={{ textAlign: "center"}}>
-                            <Button type="submit" variant="contained" color="primary">
-                                Add Contact
+                            <Button type="submit" variant="contained" color="primary" disabled={creating} startIcon={creating ? <CircularProgress size={20} /> : null}>
+                                {creating ? "Creating" : "Add Contact"}
                             </Button>
                         </Grid2>
                     </Grid2>
