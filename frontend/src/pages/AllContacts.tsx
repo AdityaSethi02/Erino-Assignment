@@ -96,13 +96,13 @@ export const AllContacts = () => {
                                         >
                                             <Box sx={{ display: "flex", flexDirection: "column"}}>
                                                 <Button onClick={() => navigate(`/update/${contact.id}`)}>
-                                                    <Typography sx={{ color: "black", pb: 1 }}>Edit, {contact.id}</Typography>
+                                                    <Typography sx={{ color: "black", pb: 1 }}>Edit</Typography>
                                                 </Button>
                                                 <Button onClick={() => navigate(`/contact/${contact.id}`)}>
-                                                    <Typography sx={{ color: "black", pb: 1 }}>Details, {contact.id}</Typography>
+                                                    <Typography sx={{ color: "black", pb: 1 }}>Details</Typography>
                                                 </Button>
                                                 <Button onClick={() => deleteContact(contact.id)}>
-                                                    <Typography sx={{ pb: 1, color: "red" }}>Delete, {contact.id}</Typography>
+                                                    <Typography sx={{ pb: 1, color: "red" }}>Delete</Typography>
                                                 </Button>
                                             </Box>
                                         </Popover>
