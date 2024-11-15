@@ -90,33 +90,20 @@ export const AllContacts = () => {
     }
 
     return (
-        <Grid2
-            sx={{
-                height: "100vh",
-                width: "100vw",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "lightblue",
-            }}
-        >
-            <Paper
-                elevation={3}
-                sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    padding: 4,
-                    height: "90%",
-                    width: "90%",
-                    maxWidth: 5000,
-                    maxHeight: 520
-                }}
-            >
+        <Grid2 sx={{ height: "100vh", width: "100vw", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "lightblue"}}>
+            <Paper elevation={3} sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 4, height: "90%", width: "90%", maxWidth: 5000, maxHeight: 520 }}>
                 <Grid2>
-                    <Typography variant="h4" color="black" gutterBottom sx={{textAlign: "center"}}>
-                        Contacts
-                    </Typography>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
+                        <Button onClick={() => navigate("/create")} sx={{ minWidth: 0, padding: 0 }}>
+                            <Typography variant="h4" color="black" gutterBottom>
+                                ←
+                            </Typography>
+                        </Button>
+                        <Typography variant="h4" color="black" gutterBottom sx={{ flexGrow: 1, textAlign: "center" }}>
+                            All Contacts
+                        </Typography>
+                        <Box sx={{ width: "24px" }} />
+                    </Box>
                     <TableContainer>
                         <Table>
                             <TableHead>
@@ -179,13 +166,7 @@ export const AllContacts = () => {
                         </Table>
                     </TableContainer>
                 </Grid2>
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                >
+                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <Button disabled={currentPage === 1} onClick={handlePrevPage}>
                         <ArrowBack sx={{ color: "blue" }} />
                     </Button>

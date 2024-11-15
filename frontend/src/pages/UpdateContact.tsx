@@ -1,7 +1,9 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import axios from "axios"
-import { Button, Grid2, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid2, Paper, TextField, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
+import { ArrowBack } from "@mui/icons-material";
+import { BACKEND_URL } from "../config";
 
 export const UpdateContact = () => {
     const [contact, setContact] = useState({
@@ -18,7 +20,7 @@ export const UpdateContact = () => {
     useEffect(() => {
         const fetchContact = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/contacts/${id}`);
+                const response = await axios.get(`${BACKEND_URL}/contacts/${id}`);
                 setContact(response.data);
             } catch (error) {
                 console.log("Error fetching contact", error)
@@ -36,7 +38,7 @@ export const UpdateContact = () => {
         e.preventDefault();
 
         try {
-            await axios.put(`http://localhost:8080/contacts/${id}`, contact);
+            await axios.put(`${BACKEND_URL}/contacts/${id}`, contact);
             navigate(`/contact/${id}`);
         } catch (error) {
             console.log("Error updating contact", error);
@@ -46,9 +48,16 @@ export const UpdateContact = () => {
     return (
         <Grid2 container direction="column" alignItems="center" justifyContent="center" sx={{ height: "100vh", width: "100vw", textAlign: "center", backgroundColor: "lightblue" }}>
             <Paper elevation={3} sx={{ padding: 4, maxWidth: 500, width: "100%" }}>
-                <Typography variant="h4" color="black" gutterBottom>
-                    Update Contact
-                </Typography>
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
+                    <Button onClick={() => navigate(`/contact/${id}`)} sx={{ minWidth: 0, padding: 0 }}>
+                        <Typography variant="h4" color="black" gutterBottom>
+                            <ArrowBack />
+                        </Typography>
+                    </Button>
+                    <Typography variant="h4" color="black" gutterBottom sx={{ flexGrow: 1, textAlign: "center" }}>
+                        Update Contact
+                    </Typography>
+                </Box>
                 <form onSubmit={handleSubmit}>
                     <Grid2 container spacing={2}>
                         <Grid2 size={6}>

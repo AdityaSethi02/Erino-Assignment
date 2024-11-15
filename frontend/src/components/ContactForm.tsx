@@ -1,7 +1,9 @@
 import { ChangeEvent, FormEvent, useState } from "react"
 import axios from "axios"
-import { Button, Grid2, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid2, Paper, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { ArrowBack, ArrowForward } from "@mui/icons-material";
+import { BACKEND_URL } from "../config";
 
 export const ContactForm = () => {
     const [contact, setContact] = useState({
@@ -23,7 +25,7 @@ export const ContactForm = () => {
         e.preventDefault();
 
         try {
-            await axios.post("http://localhost:8080/contacts", contact);
+            await axios.post(`${BACKEND_URL}/contacts`, contact);
             setContact({
                 firstName: "",
                 lastName: "",
@@ -41,9 +43,21 @@ export const ContactForm = () => {
     return (
         <Grid2 container direction="column" alignItems="center" justifyContent="center" sx={{ height: "100vh", width: "100vw", textAlign: "center", backgroundColor: "lightblue" }}>
             <Paper elevation={3} sx={{ padding: 4, maxWidth: 500, width: "100%" }}>
-                <Typography variant="h4" color="black" gutterBottom>
-                    Add New Contact
-                </Typography>
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
+                    <Button onClick={() => navigate("/")} sx={{ minWidth: 0, padding: 0 }}>
+                        <Typography variant="h4" color="black" gutterBottom>
+                            <ArrowBack />
+                        </Typography>
+                    </Button>
+                    <Typography variant="h4" color="black" gutterBottom sx={{ flexGrow: 1, textAlign: "center" }}>
+                        Add Contact
+                    </Typography>
+                    <Button onClick={() => navigate("/all")} sx={{ minWidth: 0, padding: 0 }}>
+                        <Typography variant="h4" color="black" gutterBottom>
+                            <ArrowForward />
+                        </Typography>
+                    </Button>
+                </Box>
                 <form onSubmit={handleSubmit}>
                     <Grid2 container spacing={2}>
                         <Grid2 size={6}>
