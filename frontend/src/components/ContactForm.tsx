@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react"
 import axios from "axios"
 import { Button, Grid2, Paper, TextField, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export const ContactForm = () => {
     const [contact, setContact] = useState({
@@ -11,6 +12,7 @@ export const ContactForm = () => {
         company: "",
         jobTitle: "",
     });
+    const navigate = useNavigate();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -30,6 +32,7 @@ export const ContactForm = () => {
                 company: "",
                 jobTitle: "",
             });
+            navigate("/all");
         } catch (error) {
             console.log("Error adding contact", error);
         }
@@ -38,7 +41,7 @@ export const ContactForm = () => {
     return (
         <Grid2 container direction="column" alignItems="center" justifyContent="center" sx={{ height: "100vh", width: "100vw", textAlign: "center", backgroundColor: "lightblue" }}>
             <Paper elevation={3} sx={{ padding: 4, maxWidth: 500, width: "100%" }}>
-                <Typography variant="h3" color="black" gutterBottom>
+                <Typography variant="h4" color="black" gutterBottom>
                     Add New Contact
                 </Typography>
                 <form onSubmit={handleSubmit}>
@@ -57,8 +60,8 @@ export const ContactForm = () => {
                             <TextField
                                 label="Last Name"
                                 fullWidth
-                                name="lasttName"
-                                value={contact.firstName}
+                                name="lastName"
+                                value={contact.lastName}
                                 onChange={handleChange}
                                 required
                             />
@@ -68,7 +71,7 @@ export const ContactForm = () => {
                                 label="Email"
                                 fullWidth
                                 name="email"
-                                value={contact.firstName}
+                                value={contact.email}
                                 onChange={handleChange}
                                 required
                             />
@@ -78,7 +81,7 @@ export const ContactForm = () => {
                                 label="Phone"
                                 fullWidth
                                 name="phone"
-                                value={contact.firstName}
+                                value={contact.phone}
                                 onChange={handleChange}
                                 required
                             />
@@ -88,7 +91,7 @@ export const ContactForm = () => {
                                 label="Company"
                                 fullWidth
                                 name="company"
-                                value={contact.firstName}
+                                value={contact.company}
                                 onChange={handleChange}
                                 required
                             />
@@ -98,14 +101,14 @@ export const ContactForm = () => {
                                 label="Job Title"
                                 fullWidth
                                 name="jobTitle"
-                                value={contact.firstName}
+                                value={contact.jobTitle}
                                 onChange={handleChange}
                                 required
                             />
                         </Grid2>
                         <Grid2 size={12} sx={{ textAlign: "center"}}>
                             <Button type="submit" variant="contained" color="primary">
-                                Add
+                                Add Contact
                             </Button>
                         </Grid2>
                     </Grid2>

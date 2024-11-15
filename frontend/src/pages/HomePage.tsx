@@ -1,7 +1,9 @@
 import { Button, Grid2, Paper, Typography } from "@mui/material";
 import { GitHub } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 export const HomePage = () => {
+    const navigate = useNavigate();
 
     return (
         <Grid2 container direction="column" alignItems="center" justifyContent="center" sx={{ height: "100vh", width: "100vw", textAlign: "center", backgroundColor: "lightblue" }}>
@@ -18,12 +20,12 @@ export const HomePage = () => {
                 </Grid2>
                 <Grid2 container spacing={3}>
                     <Grid2 size={6} sx={{ textAlign: "right"}}>
-                        <Button type="submit" variant="contained" color="primary">
+                        <Button onClick={() => navigate("/create")} variant="contained" color="primary">
                             Add Contact
                         </Button>
                     </Grid2>
                     <Grid2 size={6} sx={{ textAlign: "left"}}>
-                        <Button type="submit" variant="contained" color="primary">
+                        <Button onClick={() => navigate("/all")} variant="contained" color="primary">
                             All Contacts
                         </Button>
                     </Grid2>
